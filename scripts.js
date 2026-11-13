@@ -49,7 +49,17 @@ const TEX = {
   phobos: 'textures/hires/phobos_albedo.jpg',
   phobosNormal: 'textures/extra_material_for_play/phobos_normal.jpg',
   deimos: 'textures/hires/deimos_albedo.jpg',
-  deimosNormal: 'textures/extra_material_for_play/deimos_normal.jpg'
+  deimosNormal: 'textures/extra_material_for_play/deimos_normal.jpg',
+
+  io: 'textures/Io.jpeg',
+  europa: 'textures/Europa.jpg',
+  ganymede: 'textures/Ganymede.jpeg',
+  callisto: 'textures/Callisto.jpg',
+  amalthea: 'textures/Amathea.jpg',
+  himalia: 'textures/Himalia.jpg',
+  thebe: 'textures/Thebe.jpg',
+  elara: 'textures/Elara.jpg',
+  pasiphae: 'textures/Pasiphae.jpg'
 };
 
 const PLANETS = [
@@ -109,7 +119,7 @@ const PLANETS = [
     orbit: { semiMajorAxisAu: 5.2044, eccentricity: 0.0489, inclinationDeg: 1.303, orbitalPeriodDays: 4332.59, longitudeAscendingNodeDeg: 100.464, argumentPeriapsisDeg: 273.867, meanAnomalyAtEpochDeg: 20.02 },
     textures: { albedo: TEX.jupiter },
     visual: { atmosphereEnabled: true, color: '#d8b48a' },
-    satelliteIds: ['io', 'europa', 'ganymede', 'callisto'],
+    satelliteIds: ['io', 'europa', 'ganymede', 'callisto', 'amalthea', 'himalia', 'thebe', 'elara', 'pasiphae'],
     facts: ['Масса Юпитера в 318 раз больше земной.', 'Большое красное пятно — гигантский антициклон.', 'Четыре крупнейших спутника открыл Галилей в 1610 году.'],
     dataSources: [JPL_PHYS, JPL_FACT, SSS]
   },
@@ -170,10 +180,15 @@ const SATELLITES = [
   mkSat('phobos','Фобос','mars',11.267,1.0659e16,1.876,0.31891,'prograde',9376,0.0151,1.093,'#8f8378',['Приближается к Марсу и через ~50 млн лет разрушится.','Один из двух спутников Марса.'], { albedo: TEX.phobos, normal: TEX.phobosNormal }, [JPL_PHYS, CELESTIA]),
   mkSat('deimos','Деймос','mars',6.2,1.4762e15,1.471,1.263,'prograde',23463,0.00033,0.93,'#a09384',['Меньший из двух спутников Марса.','Поверхность покрыта реголитом.'], { albedo: TEX.deimos, normal: TEX.deimosNormal }, [JPL_PHYS, CELESTIA]),
   
-  mkSat('io','Ио','jupiter',1821.6,8.9319e22,3.528,1.769,'prograde',421700,0.0041,0.05,'#e8d46a',['Самый вулканически активный объект Солнечной системы.','Более 400 действующих вулканов.'], {}, [JPL_PHYS]),
-  mkSat('europa','Европа','jupiter',1560.8,4.7998e22,3.013,3.551,'prograde',671034,0.009,0.47,'#e8e0d0',['Под ледяной корой — солёный океан.','Один из главных кандидатов на поиск жизни.'], {}, [JPL_PHYS]),
-  mkSat('ganymede','Ганимед','jupiter',2634.1,1.4819e23,1.942,7.155,'prograde',1070412,0.0013,0.2,'#a89880',['Крупнейший спутник в Солнечной системе.','Обладает собственным магнитным полем.'], {}, [JPL_PHYS]),
-  mkSat('callisto','Каллисто','jupiter',2410.3,1.0759e23,1.834,16.689,'prograde',1882709,0.0074,0.192,'#6e665e',['Одна из самых кратерированных поверхностей.','Считается геологически неактивной.'], {}, [JPL_PHYS]),
+  mkSat('io','Ио','jupiter',1821.6,8.9319e22,3.528,1.769,'prograde',421700,0.0041,0.05,'#e8d46a',['Самый вулканически активный объект Солнечной системы.','Более 400 действующих вулканов.'], { albedo: TEX.io }, [JPL_PHYS]),
+  mkSat('europa','Европа','jupiter',1560.8,4.7998e22,3.013,3.551,'prograde',671034,0.009,0.47,'#e8e0d0',['Под ледяной корой — солёный океан.','Один из главных кандидатов на поиск жизни.'], { albedo: TEX.europa }, [JPL_PHYS]),
+  mkSat('ganymede','Ганимед','jupiter',2634.1,1.4819e23,1.942,7.155,'prograde',1070412,0.0013,0.2,'#a89880',['Крупнейший спутник в Солнечной системе.','Обладает собственным магнитным полем.'], { albedo: TEX.ganymede }, [JPL_PHYS]),
+  mkSat('callisto','Каллисто','jupiter',2410.3,1.0759e23,1.834,16.689,'prograde',1882709,0.0074,0.192,'#6e665e',['Одна из самых кратерированных поверхностей.','Считается геологически неактивной.'], { albedo: TEX.callisto }, [JPL_PHYS]),
+  mkSat('amalthea','Амальтея','jupiter',83.5,2.08e18,0.849,0.498,'prograde',181365,0.0032,0.374,'#a06050',['Красноватая поверхность.','Внутренний спутник Юпитера.'], { albedo: TEX.amalthea }, [JPL_PHYS]),
+  mkSat('himalia','Гималия','jupiter',85,4.2e18,2.6,250.56,'prograde',11460000,0.16,27.5,'#908070',['Крупнейший из нерегулярных спутников Юпитера.','Группа Гималии.'], { albedo: TEX.himalia }, [JPL_PHYS]),
+  mkSat('thebe','Фива','jupiter',49.3,1.5e18,3.0,0.674,'prograde',221889,0.0175,1.076,'#806050',['Второй по величине внутренний спутник.','Красноватый оттенок.'], { albedo: TEX.thebe }, [JPL_PHYS]),
+  mkSat('elara','Элара','jupiter',43,8.7e17,2.6,259.64,'prograde',11741000,0.22,26.6,'#908080',['Открыт в 1905 году.','Относится к группе Гималии.'], { albedo: TEX.elara }, [JPL_PHYS]),
+  mkSat('pasiphae','Пасифая','jupiter',30,3.0e17,2.9,743.6,'retrograde',23624000,0.41,151.4,'#605040',['Движется по ретроградной орбите.','Группа Пасифаи.'], { albedo: TEX.pasiphae }, [JPL_PHYS]),
   
   mkSat('mimas','Мимас','saturn',198.2,3.75e19,1.15,0.942,'prograde',185539,0.0196,1.574,'#b8b0a8',['Кратер Гершель занимает треть диаметра.','Известен как «Звезда Смерти».'], { albedo: TEX.mimas }, [JPL_PHYS, CELESTIA]),
   mkSat('enceladus','Энцелад','saturn',252.1,1.08e20,1.61,1.37,'prograde',237948,0.0047,0.009,'#e8f4ff',['Гейзеры воды на южном полюсе.','Источник кольца E Сатурна.'], { albedo: TEX.enceladus }, [JPL_PHYS, CELESTIA]),
@@ -193,6 +208,7 @@ const SATELLITES = [
 ];
 
 const PLANET_BY_ID = Object.fromEntries(PLANETS.map(p => [p.id, p]));
+const SATELLITE_BY_ID = Object.fromEntries(SATELLITES.map(s => [s.id, s]));
 const SATS_BY_PLANET = {};
 for (const s of SATELLITES) (SATS_BY_PLANET[s.parentPlanetId] ||= []).push(s);
 
@@ -243,12 +259,17 @@ function orbitalPosition(el, tDays) {
   const ye = x1 * sO + y2 * cO;
   return [xe, z2, -ye];
 }
-function planetElements(p) {
-  return {
-    a: p.orbit.semiMajorAxisAu, e: p.orbit.eccentricity, i: d2r(p.orbit.inclinationDeg),
-    omega: d2r(p.orbit.argumentPeriapsisDeg), Omega: d2r(p.orbit.longitudeAscendingNodeDeg),
-    M0: d2r(p.orbit.meanAnomalyAtEpochDeg), period: p.orbit.orbitalPeriodDays
-  };
+
+const elementsCache = {};
+function getPlanetElements(p) {
+  if (!elementsCache[p.id]) {
+    elementsCache[p.id] = {
+      a: p.orbit.semiMajorAxisAu, e: p.orbit.eccentricity, i: d2r(p.orbit.inclinationDeg),
+      omega: d2r(p.orbit.argumentPeriapsisDeg), Omega: d2r(p.orbit.longitudeAscendingNodeDeg),
+      M0: d2r(p.orbit.meanAnomalyAtEpochDeg), period: p.orbit.orbitalPeriodDays
+    };
+  }
+  return elementsCache[p.id];
 }
 
 /* ============================================================
@@ -257,13 +278,14 @@ function planetElements(p) {
 const textureLoader = new THREE.TextureLoader();
 const textureCache = new Map();
 
-function loadTexture(url, { srgb = true, fallback = null, anisotropy = 4 } = {}) {
+function loadTexture(url, { srgb = true, fallback = null, anisotropy = 1, generateMipmaps = false } = {}) {
   if (!url) return fallback;
   if (textureCache.has(url)) return textureCache.get(url);
   
   const tex = textureLoader.load(url);
   tex.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
   tex.anisotropy = anisotropy;
+  tex.generateMipmaps = generateMipmaps;
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
   
@@ -305,6 +327,24 @@ function makeAtmosphereMaterial(color) {
     side: THREE.BackSide,
     depthWrite: false
   });
+}
+
+function makeGlowTexture() {
+  const S = 256;
+  const canvas = document.createElement('canvas');
+  canvas.width = S; canvas.height = S;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+  grad.addColorStop(0, 'rgba(255,255,240,1)');
+  grad.addColorStop(0.1, 'rgba(255,240,180,0.9)');
+  grad.addColorStop(0.3, 'rgba(255,200,100,0.4)');
+  grad.addColorStop(0.6, 'rgba(255,150,50,0.05)');
+  grad.addColorStop(1, 'rgba(255,100,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, S, S);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
 }
 
 /* ============================================================
@@ -360,6 +400,27 @@ class SolarScene {
     this.scene.add(this.mapGroup);
     this.scene.add(this.localGroup);
 
+    // --- Визуальное Солнце для локальной сцены ---
+    this.localSunGroup = new THREE.Group();
+    const sunCore = new THREE.Mesh(
+      new THREE.SphereGeometry(30, 32, 16),
+      new THREE.MeshBasicMaterial({ color: 0xffffea })
+    );
+    this.localSunGroup.add(sunCore);
+    
+    const sunGlowMat = new THREE.SpriteMaterial({
+      map: makeGlowTexture(),
+      color: 0xffddaa,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const sunGlow = new THREE.Sprite(sunGlowMat);
+    sunGlow.scale.setScalar(500);
+    this.localSunGroup.add(sunGlow);
+    
+    this.localGroup.add(this.localSunGroup);
+
     this.planetGroups = new Map();
     this.planetMeshes = new Map();
     this.planetOrbits = new Map();
@@ -390,6 +451,8 @@ class SolarScene {
     this.raycaster = new THREE.Raycaster();
     this.pointerNdc = new THREE.Vector2();
     this.pointerDown = { x: 0, y: 0, t: 0 };
+    
+    this.sunTimer = 0;
 
     this.onSelect = null;
 
@@ -407,7 +470,7 @@ class SolarScene {
   }
 
   makeStars() {
-    const N = 5000;
+    const N = 3000;
     const pos = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
       const r = 2000 + Math.random() * 1500;
@@ -423,7 +486,7 @@ class SolarScene {
   }
 
   buildMap() {
-    const sunGeo = new THREE.SphereGeometry(MAP_SUN_RADIUS, 64, 32);
+    const sunGeo = new THREE.SphereGeometry(MAP_SUN_RADIUS, 32, 16);
     const canvas = document.createElement('canvas');
     canvas.width = 512; canvas.height = 256;
     const ctx = canvas.getContext('2d');
@@ -446,16 +509,16 @@ class SolarScene {
       tilt.rotation.z = d2r(p.rotation.axialTiltDeg);
       group.add(tilt);
 
-      const albedo = loadTexture(p.textures.albedo);
+      const albedo = loadTexture(p.textures.albedo, { generateMipmaps: true, anisotropy: 4 });
       const mat = new THREE.MeshStandardMaterial({ map: albedo, roughness: 0.9 });
       
-      const geo = new THREE.SphereGeometry(r, 64, 32);
+      const geo = new THREE.SphereGeometry(r, 32, 16);
       const mesh = new THREE.Mesh(geo, mat);
       mesh.userData.selectable = { type: 'planet', id: p.id };
       tilt.add(mesh);
 
       if (p.visual.atmosphereEnabled) {
-        const atmo = new THREE.Mesh(new THREE.SphereGeometry(r * 1.03, 64, 32), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
+        const atmo = new THREE.Mesh(new THREE.SphereGeometry(r * 1.03, 32, 16), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
         atmo.userData.noPick = true;
         tilt.add(atmo);
       }
@@ -476,10 +539,10 @@ class SolarScene {
   }
 
   makeOrbitLine(p) {
-    const el = planetElements(p);
+    const el = getPlanetElements(p);
     const pts = [];
-    for (let i = 0; i <= 256; i++) {
-      const t = (i / 256) * el.period;
+    for (let i = 0; i <= 128; i++) {
+      const t = (i / 128) * el.period;
       const [x, y, z] = orbitalPosition(el, t);
       const r = Math.hypot(x, y, z);
       const s = (MAP_ORBIT_BASE * Math.pow(r, MAP_ORBIT_EXP)) / r;
@@ -515,6 +578,7 @@ class SolarScene {
     this.mode = 'local';
     this.mapGroup.visible = false;
     this.localGroup.visible = true;
+    this.followObject = null;
     this.buildLocal(id);
     this.controls.minDistance = LOCAL_PLANET_RADIUS * 1.25;
     this.controls.maxDistance = LOCAL_PLANET_RADIUS * 14;
@@ -533,16 +597,12 @@ class SolarScene {
     const wp = new THREE.Vector3();
     b.mesh.getWorldPosition(wp);
     
-    // Берем РАДИУС САМОГО СПУТНИКА, а не орбиты
     const radius = b.mesh.geometry.parameters.radius || 1;
-    // Рассчитываем дистанцию: спутник должен занимать ~30-40% экрана
-    const dist = radius * 4.5; 
+    const d = radius * 4.0;
     
-    const camPos = wp.clone().add(new THREE.Vector3(dist, dist * 0.4, dist));
-    
-    this.animateCamera(camPos, wp, 1.0);
-    this.controls.minDistance = radius * 1.2;
-    this.controls.maxDistance = dist * 6;
+    this.animateCamera(wp.clone().add(new THREE.Vector3(d, d * 0.6, d)), wp, 1.0);
+    this.controls.minDistance = Math.max(0.2, radius * 1.5);
+    this.controls.maxDistance = d * 10;
   }
 
   buildLocal(planetId) {
@@ -557,42 +617,42 @@ class SolarScene {
     this.localGroup.add(tilt);
     this.localPlanetTilt = tilt;
 
-    const albedo = loadTexture(p.textures.albedo);
+    const albedo = loadTexture(p.textures.albedo, { generateMipmaps: true, anisotropy: 4 });
     const mat = new THREE.MeshStandardMaterial({ map: albedo, roughness: 0.85 });
     
     if (p.textures.nightLights) {
-      const nightTex = loadTexture(p.textures.nightLights);
+      const nightTex = loadTexture(p.textures.nightLights, { generateMipmaps: true });
       mat.emissiveMap = nightTex;
       mat.emissive = new THREE.Color(0xffdd99);
       mat.emissiveIntensity = 1.8;
       this.applyNightLightsShader(mat);
     }
 
-    const geo = new THREE.SphereGeometry(R, 128, 64);
+    const geo = new THREE.SphereGeometry(R, 64, 32);
     const mesh = new THREE.Mesh(geo, mat);
     tilt.add(mesh);
     this.localPlanetMesh = mesh;
     mesh.userData.selectable = { type: 'planet', id: p.id };
 
     if (p.textures.clouds) {
-      const cloudTex = loadTexture(p.textures.clouds);
+      const cloudTex = loadTexture(p.textures.clouds, { generateMipmaps: true });
       const cloudMat = new THREE.MeshStandardMaterial({
         map: cloudTex, transparent: true, opacity: 0.6, depthWrite: false
       });
-      this.cloudMesh = new THREE.Mesh(new THREE.SphereGeometry(R * 1.01, 128, 64), cloudMat);
+      this.cloudMesh = new THREE.Mesh(new THREE.SphereGeometry(R * 1.01, 64, 32), cloudMat);
       this.cloudMesh.userData.noPick = true;
       tilt.add(this.cloudMesh);
     }
 
     if (p.visual.atmosphereEnabled) {
-      const atmo = new THREE.Mesh(new THREE.SphereGeometry(R * 1.035, 64, 32), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
+      const atmo = new THREE.Mesh(new THREE.SphereGeometry(R * 1.035, 32, 16), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
       atmo.userData.noPick = true;
       tilt.add(atmo);
     }
 
     if (p.textures.ring) {
-      const ringTex = loadTexture(p.textures.ring);
-      const ringGeo = new THREE.RingGeometry(R * 1.3, R * 2.3, 128, 4);
+      const ringTex = loadTexture(p.textures.ring, { generateMipmaps: true });
+      const ringGeo = new THREE.RingGeometry(R * 1.3, R * 2.3, 64, 2);
       const pos = ringGeo.attributes.position;
       const uv = ringGeo.attributes.uv;
       for (let i = 0; i < pos.count; i++) {
@@ -610,7 +670,7 @@ class SolarScene {
     this.localPlanetAxis.visible = this.showAxes;
     tilt.add(this.localPlanetAxis);
 
-    this.localPlanetEquator = this.makeCircleLine(R * 1.01, 128, 0x66ccff, 0.8);
+    this.localPlanetEquator = this.makeCircleLine(R * 1.01, 64, 0x66ccff, 0.8);
     this.localPlanetEquator.visible = this.showAxes;
     tilt.add(this.localPlanetEquator);
 
@@ -635,14 +695,15 @@ class SolarScene {
       const satNormal = loadTexture(s.textures.normal, { srgb: false });
       const satBump = loadTexture(s.textures.bump, { srgb: false });
 
-      // Уменьшили сегменты с 64x32 до 32x16 для производительности
+      const satGeo = new THREE.SphereGeometry(satR, 24, 12);
+
       const smesh = new THREE.Mesh(
-        new THREE.SphereGeometry(satR, 32, 16),
+        satGeo,
         new THREE.MeshStandardMaterial({ 
           map: satTex, 
           normalMap: satNormal || undefined,
           bumpMap: satBump || undefined,
-          bumpScale: satBump ? 0.02 : undefined, // Уменьшили bumpScale
+          bumpScale: satBump ? 0.02 : undefined,
           color: satTex ? 0xffffff : s.visual.color, 
           roughness: 0.95 
         })
@@ -650,7 +711,7 @@ class SolarScene {
       smesh.userData.selectable = { type: 'satellite', id: s.id, parentPlanetId: p.id };
       sg.add(smesh);
 
-      const orbitLine = this.makeCircleLine(orbitR, 128, 0x6fa8dc, 0.25);
+      const orbitLine = this.makeCircleLine(orbitR, 32, 0x6fa8dc, 0.25);
       orbitLine.visible = this.showOrbits;
       tilt.add(orbitLine);
 
@@ -668,10 +729,18 @@ class SolarScene {
 
   updateSunDirection() {
     if (!this.localPlanet) return;
-    const el = planetElements(this.localPlanet);
+    const el = getPlanetElements(this.localPlanet);
     const [px, py, pz] = orbitalPosition(el, this.simDays);
+    
+    // Вектор от Солнца к планете
     const lightDir = new THREE.Vector3(px, py, pz).normalize().negate();
-    this.localLight.position.copy(lightDir.clone().multiplyScalar(2000));
+    
+    // Ставим локальное Солнце на расстоянии 4000 единиц
+    const sunDist = 4000;
+    const sunPos = lightDir.clone().multiplyScalar(sunDist);
+    this.localLight.position.copy(sunPos);
+    this.localSunGroup.position.copy(sunPos);
+
     this.localLight.target.position.set(0, 0, 0);
     this.localLight.target.updateMatrixWorld();
     if (this.earthSunUniform) this.earthSunUniform.value.copy(lightDir);
@@ -709,6 +778,7 @@ class SolarScene {
 
   clearLocal() {
     this.localGroup.traverse((obj) => {
+      if (obj === this.localSunGroup) return; // Не удаляем солнце
       if (obj.geometry) obj.geometry.dispose();
       if (obj.material) {
         const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
@@ -720,7 +790,11 @@ class SolarScene {
         }
       }
     });
+    // Очищаем все, кроме localSunGroup
+    const sun = this.localSunGroup;
     this.localGroup.clear();
+    this.localGroup.add(sun);
+
     this.localBodies = [];
     this.localPlanetMesh = null;
     this.localPlanetTilt = null;
@@ -799,7 +873,7 @@ class SolarScene {
         const group = this.planetGroups.get(p.id);
         const mesh = this.planetMeshes.get(p.id);
         if (!group || !mesh) continue;
-        const el = planetElements(p);
+        const el = getPlanetElements(p);
         const [x, y, z] = orbitalPosition(el, this.simDays);
         const r = Math.hypot(x, y, z);
         const s = (MAP_ORBIT_BASE * Math.pow(r, MAP_ORBIT_EXP)) / r;
@@ -819,13 +893,18 @@ class SolarScene {
         b.group.position.set(Math.cos(ang) * b.orbitRadius, 0, Math.sin(ang) * b.orbitRadius);
         if (b.data.rotation.synchronous) b.mesh.rotation.y = -ang;
       }
-      this.updateSunDirection();
+
+      this.sunTimer++;
+      if (this.sunTimer > 30) {
+        this.updateSunDirection();
+        this.sunTimer = 0;
+      }
     }
 
-    if (this.followObject) {
+    if (this.followObject && this.localGroup.visible) {
       const wp = new THREE.Vector3();
       this.followObject.getWorldPosition(wp);
-      this.controls.target.lerp(wp, 0.15);
+      this.controls.target.lerp(wp, 0.18);
     }
 
     if (this.tween) {
@@ -860,6 +939,11 @@ function syncEngine() {
   engine.showOrbits = state.showOrbits;
   engine.showAxes = state.showAxes;
   engine.showLabels = state.showLabels;
+  
+  if (!state.selectedSatelliteId) {
+    engine.followObject = null;
+  }
+
   for (const l of engine.planetOrbits.values()) l.visible = state.showOrbits;
   for (const b of engine.localBodies) { b.orbitLine.visible = state.showOrbits; b.label.visible = state.showLabels; }
   for (const l of engine.planetLabels.values()) l.visible = state.showLabels;
@@ -913,9 +997,24 @@ const buildTopbarMap = () => h('header', { class: 'topbar' },
 
 const buildTopbarViewer = () => {
   const p = PLANET_BY_ID[state.selectedPlanetId];
+  const s = state.selectedSatelliteId ? SATELLITE_BY_ID[state.selectedSatelliteId] : null;
+  
   return h('header', { class: 'topbar' },
-    h('button', { class: 'btn ghost', onClick: () => { setState({ screen: 'map', selectedSatelliteId: null }); engine.setScreen('map'); } }, '← Карта'),
-    h('div', { class: 'title' }, h('span', { class: 'dot', style: { background: p.visual.color } }), h('span', { class: 'name' }, p.name), h('span', { class: 'sub' }, p.englishName)),
+    h('button', { class: 'btn ghost', onClick: () => { 
+      if (s) { 
+        setState({ selectedSatelliteId: null }); 
+        engine.focusPlanet(p.id);
+      } else { 
+        setState({ screen: 'map' }); 
+        engine.setScreen('map'); 
+      }
+    } }, s ? '← ' + p.name : '← Карта'),
+    
+    h('div', { class: 'title' }, 
+      h('span', { class: 'dot', style: { background: s ? s.visual.color : p.visual.color } }), 
+      h('span', { class: 'name' }, s ? s.name : p.name), 
+      h('span', { class: 'sub' }, s ? p.name : p.englishName)
+    ),
     h('div', { class: 'topbar-actions' }, h('button', { class: 'btn', onClick: () => setState({ compareOpen: true }) }, 'Сравнение'))
   );
 };
@@ -937,23 +1036,36 @@ const buildMapSidebar = () => h('aside', { class: 'sidebar left' },
 const buildScaleDisclaimer = () => h('div', { class: 'scale-disclaimer' }, 'Схема условная. Размеры планет и расстояния между ними не соответствуют реальному масштабу.');
 
 const buildInfoPanel = () => {
-  const p = PLANET_BY_ID[state.selectedPlanetId]; if (!p) return null;
-  return h('section', { class: `panel info-panel ${state.infoOpen ? '' : 'collapsed'}` },
-    h('header', { class: 'panel-head', onClick: () => setState({ infoOpen: !state.infoOpen }) }, h('h2', {}, 'Параметры'), h('button', { class: 'icon-btn' }, state.infoOpen ? '–' : '+')),
-    state.infoOpen ? h('div', { class: 'panel-body' },
-      h('p', { class: 'description' }, p.description),
+  const isSat = !!state.selectedSatelliteId;
+  const body = isSat 
+    ? SATELLITE_BY_ID[state.selectedSatelliteId] 
+    : PLANET_BY_ID[state.selectedPlanetId];
+    
+  if (!body) return null;
+  const open = state.infoOpen;
+
+  return h('section', { class: `panel info-panel ${open ? '' : 'collapsed'}` },
+    h('header', { class: 'panel-head', onClick: () => setState({ infoOpen: !open }) }, 
+      h('h2', {}, isSat ? 'Спутник' : 'Параметры'), 
+      h('button', { class: 'icon-btn' }, open ? '–' : '+')
+    ),
+    open ? h('div', { class: 'panel-body' },
+      h('h3', { style: { marginTop: 0, color: 'var(--text)', textTransform: 'none', fontSize: '18px', letterSpacing: 'normal' } }, body.name),
+      h('p', { class: 'description' }, body.description),
       h('dl', { class: 'kv' },
-        h('dt', {}, 'Средний радиус'), h('dd', {}, fmtNumber(p.physical.meanRadiusKm, 1) + ' км'),
-        h('dt', {}, 'Масса'), h('dd', {}, fmtScientific(p.physical.massKg) + ' кг'),
-        h('dt', {}, 'Плотность'), h('dd', {}, p.physical.densityGcm3 + ' г/см³'),
-        h('dt', {}, 'Гравитация'), h('dd', {}, p.physical.gravityMs2 + ' м/с²'),
-        h('dt', {}, 'Период вращения'), h('dd', {}, fmtDays(p.rotation.periodDays)),
-        h('dt', {}, 'Направление'), h('dd', {}, p.rotation.direction === 'prograde' ? 'прямое' : 'ретроградное'),
-        h('dt', {}, 'Наклон оси'), h('dd', {}, p.rotation.axialTiltDeg + '°'),
-        h('dt', {}, 'Орбитальный период'), h('dd', {}, fmtDays(p.orbit.orbitalPeriodDays))
+        h('dt', {}, 'Средний радиус'), h('dd', {}, fmtNumber(body.physical.meanRadiusKm, 1) + ' км'),
+        h('dt', {}, 'Масса'), h('dd', {}, fmtScientific(body.physical.massKg) + ' кг'),
+        h('dt', {}, 'Плотность'), h('dd', {}, body.physical.densityGcm3 + ' г/см³'),
+        !isSat ? h('dt', {}, 'Гравитация') : null, 
+        !isSat ? h('dd', {}, body.physical.gravityMs2 + ' м/с²') : null,
+        h('dt', {}, 'Период вращения'), h('dd', {}, fmtDays(body.rotation.periodDays)),
+        h('dt', {}, 'Направление'), h('dd', {}, body.rotation.direction === 'prograde' ? 'прямое' : 'ретроградное'),
+        !isSat ? h('dt', {}, 'Наклон оси') : null, 
+        !isSat ? h('dd', {}, body.rotation.axialTiltDeg + '°') : null,
+        h('dt', {}, 'Орбитальный период'), h('dd', {}, fmtDays(body.orbit.orbitalPeriodDays))
       ),
-      h('h3', {}, 'Факты'), h('ul', { class: 'facts' }, p.facts.map(f => h('li', {}, f))),
-      h('h3', {}, 'Источники'), h('ul', { class: 'sources' }, p.dataSources.map(s => h('li', {}, s)))
+      h('h3', {}, 'Факты'), h('ul', { class: 'facts' }, body.facts.map(f => h('li', {}, f))),
+      h('h3', {}, 'Источники'), h('ul', { class: 'sources' }, body.dataSources.map(s => h('li', {}, s)))
     ) : null
   );
 };

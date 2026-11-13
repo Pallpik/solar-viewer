@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /* ============================================================
-   1. ДАННЫЕ (физические параметры — JPL)
+   1. ДАННЫЕ (физические параметры — JPL, текстуры - локальные)
    ============================================================ */
 const JPL_PHYS = 'NASA/JPL Planetary Physical Parameters: https://ssd.jpl.nasa.gov/planets/phys_par.html';
 const JPL_FACT = 'NASA Planetary Fact Sheet: https://nssdc.gsfc.nasa.gov/planetary/factsheet/';
-const SSS = 'Solar System Scope textures (CC BY 4.0): https://www.solarsystemscope.com/textures/';
+const SSS = 'Solar System Scope (CC BY 4.0)';
+const CELESTIA = 'Celestia Motherlode (CC0)';
+const FARGETANIK = 'FarGetaNik (CC BY-SA 4.0)';
+const ASKANIY = 'Askaniy (CC BY 3.0)';
 
-// Локальные пути к текстурам
 const TEX = {
   mercury: 'textures/2k_mercury.jpg',
   venus: 'textures/2k_venus_surface.jpg',
@@ -21,7 +23,33 @@ const TEX = {
   saturn: 'textures/2k_saturn.jpg',
   saturnRing: 'textures/2k_saturn_ring_alpha.png',
   uranus: 'textures/2k_uranus.jpg',
-  neptune: 'textures/2k_neptune.jpg'
+  neptune: 'textures/2k_neptune.jpg',
+
+  dione: 'textures/dione.jpg',
+  enceladus: 'textures/Enceladus.jpg',
+  iapetus: 'textures/Iapetus.jpg',
+  mimas: 'textures/Mimas.jpg',
+  rhea: 'textures/Rhea.jpg',
+  tethys: 'textures/Tethys.jpg',
+  titan: 'textures/2k_titan.jpg',
+  
+  miranda: 'textures/MirandaColour.png',
+  mirandaBump: 'textures/MirandaBump.png',
+  ariel: 'textures/ArielColour.Png',
+  arielBump: 'textures/ArielBump.Png',
+  umbriel: 'textures/UmbirelColour.png',
+  umbrielBump: 'textures/UmbirelBump.png',
+  titania: 'textures/TitaniaColour.png',
+  titaniaBump: 'textures/TitaniaBump.png',
+  oberon: 'textures/OberonColour.png',
+  oberonBump: 'textures/OberonBump.png',
+  
+  triton: 'textures/Triton.jpg',
+  
+  phobos: 'textures/hires/phobos_albedo.jpg',
+  phobosNormal: 'textures/extra_material_for_play/phobos_normal.jpg',
+  deimos: 'textures/hires/deimos_albedo.jpg',
+  deimosNormal: 'textures/extra_material_for_play/deimos_normal.jpg'
 };
 
 const PLANETS = [
@@ -123,40 +151,45 @@ const PLANETS = [
   }
 ];
 
-function mkSat(id, name, parent, radiusKm, massKg, density, periodDays, dir, aKm, e, iDeg, color, facts, tex) {
+function mkSat(id, name, parent, radiusKm, massKg, density, periodDays, dir, aKm, e, iDeg, color, facts, texObj, sources) {
   return {
     id, name, parentPlanetId: parent,
     description: name + ' — спутник планеты ' + parent + '.',
     physical: { meanRadiusKm: radiusKm, massKg, densityGcm3: density },
     rotation: { periodDays, direction: dir, synchronous: true },
     orbit: { semiMajorAxisKm: aKm, eccentricity: e, inclinationDeg: iDeg, orbitalPeriodDays: periodDays, direction: dir, meanAnomalyAtEpochDeg: (id.charCodeAt(0) * 37) % 360 },
-    textures: { albedo: tex || null },
+    textures: texObj,
     visual: { color }, facts,
-    dataSources: [JPL_PHYS, SSS]
+    dataSources: sources || [JPL_PHYS, CELESTIA]
   };
 }
 
 const SATELLITES = [
-  mkSat('moon','Луна','earth',1737.4,7.342e22,3.344,27.3217,'prograde',384399,0.0549,5.145,'#c8c4bc',['Единственный естественный спутник Земли.','Всегда обращена к Земле одной стороной.','Вызывает приливы и отливы.'], TEX.moon),
-  mkSat('phobos','Фобос','mars',11.267,1.0659e16,1.876,0.31891,'prograde',9376,0.0151,1.093,'#8f8378',['Приближается к Марсу и через ~50 млн лет разрушится.','Один из двух спутников Марса.']),
-  mkSat('deimos','Деймос','mars',6.2,1.4762e15,1.471,1.263,'prograde',23463,0.00033,0.93,'#a09384',['Меньший из двух спутников Марса.','Поверхность покрыта реголитом.']),
-  mkSat('io','Ио','jupiter',1821.6,8.9319e22,3.528,1.769,'prograde',421700,0.0041,0.05,'#e8d46a',['Самый вулканически активный объект Солнечной системы.','Более 400 действующих вулканов.']),
-  mkSat('europa','Европа','jupiter',1560.8,4.7998e22,3.013,3.551,'prograde',671034,0.009,0.47,'#e8e0d0',['Под ледяной корой — солёный океан.','Один из главных кандидатов на поиск жизни.']),
-  mkSat('ganymede','Ганимед','jupiter',2634.1,1.4819e23,1.942,7.155,'prograde',1070412,0.0013,0.2,'#a89880',['Крупнейший спутник в Солнечной системе.','Обладает собственным магнитным полем.']),
-  mkSat('callisto','Каллисто','jupiter',2410.3,1.0759e23,1.834,16.689,'prograde',1882709,0.0074,0.192,'#6e665e',['Одна из самых кратерированных поверхностей.','Считается геологически неактивной.']),
-  mkSat('mimas','Мимас','saturn',198.2,3.75e19,1.15,0.942,'prograde',185539,0.0196,1.574,'#b8b0a8',['Кратер Гершель занимает треть диаметра.','Известен как «Звезда Смерти».']),
-  mkSat('enceladus','Энцелад','saturn',252.1,1.08e20,1.61,1.37,'prograde',237948,0.0047,0.009,'#e8f4ff',['Гейзеры воды на южном полюсе.','Источник кольца E Сатурна.']),
-  mkSat('tethys','Тефия','saturn',531.1,6.17e20,0.98,1.888,'prograde',294619,0.0001,1.12,'#d8d2c8',['Почти чистая ледяная поверхность.','Огромный кратер Одиссей.']),
-  mkSat('dione','Диона','saturn',561.4,1.095e21,1.478,2.737,'prograde',377396,0.0022,0.019,'#c8c2b8',['Имеет тонкую атмосферу из кислорода.','Поверхность покрыта яркими полосами.']),
-  mkSat('rhea','Рея','saturn',763.8,2.306e21,1.236,4.518,'prograde',527108,0.001,0.345,'#d0cabf',['Второй по величине спутник Сатурна.','Состоит преимущественно из водяного льда.']),
-  mkSat('titan','Титан','saturn',2574.7,1.3452e23,1.882,15.945,'prograde',1221870,0.0288,0.349,'#d8a86a',['Единственный спутник с плотной атмосферой.','Метановые озёра и реки на поверхности.']),
-  mkSat('iapetus','Япет','saturn',734.5,1.806e21,1.088,79.32,'prograde',3560820,0.0286,15.47,'#9a8a78',['Двухцветная поверхность: светлая и тёмная.','Сильно наклонённая орбита.']),
-  mkSat('miranda','Миранда','uranus',235.8,6.59e19,1.2,1.413,'prograde',129390,0.0013,4.232,'#b8b4ac',['Хаотичный рельеф с огромными уступами.','Открыта в 1948 году.']),
-  mkSat('ariel','Ариэль','uranus',578.9,1.353e21,1.592,2.52,'prograde',191020,0.0012,0.26,'#c8c4bc',['Самая яркая поверхность среди спутников Урана.','Молодые геологические структуры.']),
-  mkSat('umbriel','Умбриэль','uranus',584.7,1.172e21,1.459,4.144,'prograde',266000,0.0039,0.128,'#7a736c',['Самая тёмная поверхность среди спутников Урана.','Кратер Вунда — яркое пятно.']),
-  mkSat('titania','Титания','uranus',788.9,3.527e21,1.711,8.706,'prograde',435910,0.0011,0.34,'#b0a89e',['Крупнейший спутник Урана.','Разломы и каньоны на поверхности.']),
-  mkSat('oberon','Оберон','uranus',761.4,3.014e21,1.63,13.463,'prograde',583520,0.0014,0.058,'#8a7c72',['Самый далёкий крупный спутник Урана.','Древняя кратерированная поверхность.']),
-  mkSat('triton','Тритон','neptune',1353.4,2.139e22,2.061,5.877,'retrograde',354759,0.000016,156.885,'#e0c8d0',['Движется по ретроградной орбите.','Азотные гейзеры и тонкая атмосфера.'])
+  mkSat('moon','Луна','earth',1737.4,7.342e22,3.344,27.3217,'prograde',384399,0.0549,5.145,'#c8c4bc',['Единственный естественный спутник Земли.','Всегда обращена к Земле одной стороной.','Вызывает приливы и отливы.'], { albedo: TEX.moon }, [JPL_PHYS, SSS]),
+  
+  mkSat('phobos','Фобос','mars',11.267,1.0659e16,1.876,0.31891,'prograde',9376,0.0151,1.093,'#8f8378',['Приближается к Марсу и через ~50 млн лет разрушится.','Один из двух спутников Марса.'], { albedo: TEX.phobos, normal: TEX.phobosNormal }, [JPL_PHYS, CELESTIA]),
+  mkSat('deimos','Деймос','mars',6.2,1.4762e15,1.471,1.263,'prograde',23463,0.00033,0.93,'#a09384',['Меньший из двух спутников Марса.','Поверхность покрыта реголитом.'], { albedo: TEX.deimos, normal: TEX.deimosNormal }, [JPL_PHYS, CELESTIA]),
+  
+  mkSat('io','Ио','jupiter',1821.6,8.9319e22,3.528,1.769,'prograde',421700,0.0041,0.05,'#e8d46a',['Самый вулканически активный объект Солнечной системы.','Более 400 действующих вулканов.'], {}, [JPL_PHYS]),
+  mkSat('europa','Европа','jupiter',1560.8,4.7998e22,3.013,3.551,'prograde',671034,0.009,0.47,'#e8e0d0',['Под ледяной корой — солёный океан.','Один из главных кандидатов на поиск жизни.'], {}, [JPL_PHYS]),
+  mkSat('ganymede','Ганимед','jupiter',2634.1,1.4819e23,1.942,7.155,'prograde',1070412,0.0013,0.2,'#a89880',['Крупнейший спутник в Солнечной системе.','Обладает собственным магнитным полем.'], {}, [JPL_PHYS]),
+  mkSat('callisto','Каллисто','jupiter',2410.3,1.0759e23,1.834,16.689,'prograde',1882709,0.0074,0.192,'#6e665e',['Одна из самых кратерированных поверхностей.','Считается геологически неактивной.'], {}, [JPL_PHYS]),
+  
+  mkSat('mimas','Мимас','saturn',198.2,3.75e19,1.15,0.942,'prograde',185539,0.0196,1.574,'#b8b0a8',['Кратер Гершель занимает треть диаметра.','Известен как «Звезда Смерти».'], { albedo: TEX.mimas }, [JPL_PHYS, CELESTIA]),
+  mkSat('enceladus','Энцелад','saturn',252.1,1.08e20,1.61,1.37,'prograde',237948,0.0047,0.009,'#e8f4ff',['Гейзеры воды на южном полюсе.','Источник кольца E Сатурна.'], { albedo: TEX.enceladus }, [JPL_PHYS, CELESTIA]),
+  mkSat('tethys','Тефия','saturn',531.1,6.17e20,0.98,1.888,'prograde',294619,0.0001,1.12,'#d8d2c8',['Почти чистая ледяная поверхность.','Огромный кратер Одиссей.'], { albedo: TEX.tethys }, [JPL_PHYS, CELESTIA]),
+  mkSat('dione','Диона','saturn',561.4,1.095e21,1.478,2.737,'prograde',377396,0.0022,0.019,'#c8c2b8',['Имеет тонкую атмосферу из кислорода.','Поверхность покрыта яркими полосами.'], { albedo: TEX.dione }, [JPL_PHYS, CELESTIA]),
+  mkSat('rhea','Рея','saturn',763.8,2.306e21,1.236,4.518,'prograde',527108,0.001,0.345,'#d0cabf',['Второй по величине спутник Сатурна.','Состоит преимущественно из водяного льда.'], { albedo: TEX.rhea }, [JPL_PHYS, CELESTIA]),
+  mkSat('titan','Титан','saturn',2574.7,1.3452e23,1.882,15.945,'prograde',1221870,0.0288,0.349,'#d8a86a',['Единственный спутник с плотной атмосферой.','Метановые озёра и реки на поверхности.'], { albedo: TEX.titan }, [JPL_PHYS, SSS, FARGETANIK]),
+  mkSat('iapetus','Япет','saturn',734.5,1.806e21,1.088,79.32,'prograde',3560820,0.0286,15.47,'#9a8a78',['Двухцветная поверхность: светлая и тёмная.','Сильно наклонённая орбита.'], { albedo: TEX.iapetus }, [JPL_PHYS, CELESTIA]),
+  
+  mkSat('miranda','Миранда','uranus',235.8,6.59e19,1.2,1.413,'prograde',129390,0.0013,4.232,'#b8b4ac',['Хаотичный рельеф с огромными уступами.','Открыта в 1948 году.'], { albedo: TEX.miranda, bump: TEX.mirandaBump }, [JPL_PHYS, FARGETANIK]),
+  mkSat('ariel','Ариэль','uranus',578.9,1.353e21,1.592,2.52,'prograde',191020,0.0012,0.26,'#c8c4bc',['Самая яркая поверхность среди спутников Урана.','Молодые геологические структуры.'], { albedo: TEX.ariel, bump: TEX.arielBump }, [JPL_PHYS, FARGETANIK]),
+  mkSat('umbriel','Умбриэль','uranus',584.7,1.172e21,1.459,4.144,'prograde',266000,0.0039,0.128,'#7a736c',['Самая тёмная поверхность среди спутников Урана.','Кратер Вунда — яркое пятно.'], { albedo: TEX.umbriel, bump: TEX.umbrielBump }, [JPL_PHYS, FARGETANIK]),
+  mkSat('titania','Титания','uranus',788.9,3.527e21,1.711,8.706,'prograde',435910,0.0011,0.34,'#b0a89e',['Крупнейший спутник Урана.','Разломы и каньоны на поверхности.'], { albedo: TEX.titania, bump: TEX.titaniaBump }, [JPL_PHYS, FARGETANIK]),
+  mkSat('oberon','Оберон','uranus',761.4,3.014e21,1.63,13.463,'prograde',583520,0.0014,0.058,'#8a7c72',['Самый далёкий крупный спутник Урана.','Древняя кратерированная поверхность.'], { albedo: TEX.oberon, bump: TEX.oberonBump }, [JPL_PHYS, FARGETANIK]),
+  
+  mkSat('triton','Тритон','neptune',1353.4,2.139e22,2.061,5.877,'retrograde',354759,0.000016,156.885,'#e0c8d0',['Движется по ретроградной орбите.','Азотные гейзеры и тонкая атмосфера.'], { albedo: TEX.triton }, [JPL_PHYS, ASKANIY])
 ];
 
 const PLANET_BY_ID = Object.fromEntries(PLANETS.map(p => [p.id, p]));
@@ -224,7 +257,7 @@ function planetElements(p) {
 const textureLoader = new THREE.TextureLoader();
 const textureCache = new Map();
 
-function loadTexture(url, { srgb = true, fallback = null, anisotropy = 8 } = {}) {
+function loadTexture(url, { srgb = true, fallback = null, anisotropy = 4 } = {}) {
   if (!url) return fallback;
   if (textureCache.has(url)) return textureCache.get(url);
   
@@ -234,9 +267,8 @@ function loadTexture(url, { srgb = true, fallback = null, anisotropy = 8 } = {})
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
   
-  // В случае ошибки сети, возвращаем fallback
   tex.onError = () => {
-    console.warn(`[Texture] Failed to load ${url}. Using fallback.`);
+    console.warn(`[Texture] Failed to load ${url}.`);
     textureCache.set(url, fallback);
   };
   
@@ -246,7 +278,7 @@ function loadTexture(url, { srgb = true, fallback = null, anisotropy = 8 } = {})
 
 function makeAtmosphereMaterial(color) {
   return new THREE.ShaderMaterial({
-    uniforms: { uColor: { value: color }, uIntensity: { value: 0.9 } },
+    uniforms: { uColor: { value: color }, uIntensity: { value: 0.8 } },
     vertexShader: `
       varying vec3 vNormalW;
       varying vec3 vViewDirW;
@@ -309,7 +341,7 @@ class SolarScene {
     this.controls.minDistance = 10;
     this.controls.maxDistance = 700;
 
-    this.ambient = new THREE.AmbientLight(0xffffff, 0.05);
+    this.ambient = new THREE.AmbientLight(0xffffff, 0.08);
     this.scene.add(this.ambient);
     
     this.mapLight = new THREE.PointLight(0xfff4e0, 3.5, 0, 0);
@@ -391,9 +423,7 @@ class SolarScene {
   }
 
   buildMap() {
-    // Солнце
     const sunGeo = new THREE.SphereGeometry(MAP_SUN_RADIUS, 64, 32);
-    // Простая процедурная текстура для Солнца, чтобы не тянуть лишний файл
     const canvas = document.createElement('canvas');
     canvas.width = 512; canvas.height = 256;
     const ctx = canvas.getContext('2d');
@@ -425,7 +455,7 @@ class SolarScene {
       tilt.add(mesh);
 
       if (p.visual.atmosphereEnabled) {
-        const atmo = new THREE.Mesh(new THREE.SphereGeometry(r * 1.05, 32, 16), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
+        const atmo = new THREE.Mesh(new THREE.SphereGeometry(r * 1.03, 64, 32), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
         atmo.userData.noPick = true;
         tilt.add(atmo);
       }
@@ -491,20 +521,28 @@ class SolarScene {
     this.animateCamera(this.localCamPos.clone(), new THREE.Vector3(0, 0, 0), 1.2);
     this.mapLight.intensity = 0;
     this.localLight.intensity = 3.5;
-    this.ambient.intensity = 0.03;
+    this.ambient.intensity = 0.08;
   }
 
   focusSatellite(planetId, satId) {
     if (this.localPlanet?.id !== planetId) return;
     const b = this.localBodies.find(x => x.data.id === satId);
     if (!b) return;
+    
     this.followObject = b.mesh;
     const wp = new THREE.Vector3();
     b.mesh.getWorldPosition(wp);
-    const radius = b.mesh.geometry.boundingSphere?.radius ?? 1;
-    const d = Math.max(b.orbitRadius * 0.6, radius) * 3;
-    this.animateCamera(wp.clone().add(new THREE.Vector3(d, d*0.6, d)), wp, 1.0);
-    this.controls.minDistance = Math.max(0.2, radius * 1.5);
+    
+    // Берем РАДИУС САМОГО СПУТНИКА, а не орбиты
+    const radius = b.mesh.geometry.parameters.radius || 1;
+    // Рассчитываем дистанцию: спутник должен занимать ~30-40% экрана
+    const dist = radius * 4.5; 
+    
+    const camPos = wp.clone().add(new THREE.Vector3(dist, dist * 0.4, dist));
+    
+    this.animateCamera(camPos, wp, 1.0);
+    this.controls.minDistance = radius * 1.2;
+    this.controls.maxDistance = dist * 6;
   }
 
   buildLocal(planetId) {
@@ -522,7 +560,6 @@ class SolarScene {
     const albedo = loadTexture(p.textures.albedo);
     const mat = new THREE.MeshStandardMaterial({ map: albedo, roughness: 0.85 });
     
-    // Ночные огни Земли
     if (p.textures.nightLights) {
       const nightTex = loadTexture(p.textures.nightLights);
       mat.emissiveMap = nightTex;
@@ -537,7 +574,6 @@ class SolarScene {
     this.localPlanetMesh = mesh;
     mesh.userData.selectable = { type: 'planet', id: p.id };
 
-    // Облака Земли
     if (p.textures.clouds) {
       const cloudTex = loadTexture(p.textures.clouds);
       const cloudMat = new THREE.MeshStandardMaterial({
@@ -548,14 +584,12 @@ class SolarScene {
       tilt.add(this.cloudMesh);
     }
 
-    // Атмосфера
     if (p.visual.atmosphereEnabled) {
-      const atmo = new THREE.Mesh(new THREE.SphereGeometry(R * 1.03, 64, 32), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
+      const atmo = new THREE.Mesh(new THREE.SphereGeometry(R * 1.035, 64, 32), makeAtmosphereMaterial(new THREE.Color(p.visual.color)));
       atmo.userData.noPick = true;
       tilt.add(atmo);
     }
 
-    // Кольца Сатурна
     if (p.textures.ring) {
       const ringTex = loadTexture(p.textures.ring);
       const ringGeo = new THREE.RingGeometry(R * 1.3, R * 2.3, 128, 4);
@@ -572,7 +606,6 @@ class SolarScene {
       tilt.add(ringMesh);
     }
 
-    // Оси
     this.localPlanetAxis = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-R*1.5,0), new THREE.Vector3(0,R*1.5,0)]), new THREE.LineBasicMaterial({ color: 0xffaa66 }));
     this.localPlanetAxis.visible = this.showAxes;
     tilt.add(this.localPlanetAxis);
@@ -585,7 +618,6 @@ class SolarScene {
     plabel.position.set(0, R * 1.2, 0);
     mesh.add(plabel);
 
-    // Спутники
     const sats = SATS_BY_PLANET[p.id] || [];
     const aValues = sats.map(s => s.orbit.semiMajorAxisKm);
     const minA = Math.min(...aValues), maxA = Math.max(...aValues);
@@ -600,9 +632,20 @@ class SolarScene {
       tilt.add(sg);
 
       const satTex = loadTexture(s.textures.albedo);
+      const satNormal = loadTexture(s.textures.normal, { srgb: false });
+      const satBump = loadTexture(s.textures.bump, { srgb: false });
+
+      // Уменьшили сегменты с 64x32 до 32x16 для производительности
       const smesh = new THREE.Mesh(
         new THREE.SphereGeometry(satR, 32, 16),
-        new THREE.MeshStandardMaterial({ map: satTex, color: satTex ? 0xffffff : s.visual.color, roughness: 0.95 })
+        new THREE.MeshStandardMaterial({ 
+          map: satTex, 
+          normalMap: satNormal || undefined,
+          bumpMap: satBump || undefined,
+          bumpScale: satBump ? 0.02 : undefined, // Уменьшили bumpScale
+          color: satTex ? 0xffffff : s.visual.color, 
+          roughness: 0.95 
+        })
       );
       smesh.userData.selectable = { type: 'satellite', id: s.id, parentPlanetId: p.id };
       sg.add(smesh);
@@ -671,6 +714,8 @@ class SolarScene {
         const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
         for (const m of mats) {
           if (m.map && !textureCache.has(m.map.source?.data?.src)) m.map.dispose();
+          if (m.normalMap && !textureCache.has(m.normalMap.source?.data?.src)) m.normalMap.dispose();
+          if (m.bumpMap && !textureCache.has(m.bumpMap.source?.data?.src)) m.bumpMap.dispose();
           m.dispose();
         }
       }
@@ -815,7 +860,6 @@ function syncEngine() {
   engine.showOrbits = state.showOrbits;
   engine.showAxes = state.showAxes;
   engine.showLabels = state.showLabels;
-  // Обновляем видимость линий на лету
   for (const l of engine.planetOrbits.values()) l.visible = state.showOrbits;
   for (const b of engine.localBodies) { b.orbitLine.visible = state.showOrbits; b.label.visible = state.showLabels; }
   for (const l of engine.planetLabels.values()) l.visible = state.showLabels;
@@ -858,7 +902,7 @@ const buildStartScreen = () => h('div', { class: 'start-screen' },
     h('p', { class: 'lead' }, 'Интерактивная карта, реалистичное освещение, наклон оси, вращение и орбиты восьми планет и двадцати крупных спутников.'),
     h('button', { class: 'btn primary large', onClick: () => { setState({ screen: 'map' }); engine.setScreen('map'); } }, 'Начать исследование'),
     h('div', { class: 'start-meta' }, h('span', {}, 'Three.js · WebGL 2'), h('span', {}, 'Версия 2.0')),
-    h('div', { class: 'attribution' }, 'Текстуры: Solar System Scope (CC BY 4.0). Физические параметры: NASA/JPL.')
+    h('div', { class: 'attribution' }, 'Текстуры: Solar System Scope (CC BY 4.0), Celestia Motherlode (CC0), FarGetaNik, Askaniy. Физические параметры: NASA/JPL.')
   )
 );
 
